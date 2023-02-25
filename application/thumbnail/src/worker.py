@@ -103,7 +103,7 @@ def update_db(filename):
   logger.info('Detecting labels: {}'.format(filename))
   response = vision_client.label_detection(image=image, max_results=3)
   labels = [label.description for label in response.label_annotations]
-  logger.info('Detected labels for {}: {}'.format(
+  logger.info('Detected labels for1 {}: {}'.format(
     filename, ', '.join(labels)))
 
   logger.info('Updating the database: {}'.format(filename))

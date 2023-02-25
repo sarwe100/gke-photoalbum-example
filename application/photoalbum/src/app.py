@@ -130,7 +130,6 @@ def post():
     publish_message('thumbnail-service', filename)
   return show_photos(form)
 
-
 @app.route('/delete', methods=['POST'])
 def delete():
   photo_id = list(request.form.keys())[0]

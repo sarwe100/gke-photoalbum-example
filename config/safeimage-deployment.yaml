@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: safeimage-worker
+  name: safeimage-worker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: safeimage-worker
+  template:
+    metadata:
+      labels:
+        name: safeimage-worker
+    spec:
+      containers:
+      - name: safeimage-worker
+        image: gcr.io/[PROJECT_ID]/safeimage-worker@[DIGEST]
+        env:
+        - name: PROJECT_ID
+          value: "[PROJECT_ID]"

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: thumbnail-worker
+  name: thumbnail-worker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: thumbnail-worker
+  template:
+    metadata:
+      labels:
+        name: thumbnail-worker
+    spec:
+      containers:
+      - name: thumbnail-worker
+        image: gcr.io/[PROJECT_ID]/thumbnail-worker@[DIGEST]
+        env:
+        - name: PROJECT_ID
+          value: "[PROJECT_ID]"
+        - name: DB_USER
+          value: "appuser"
+        - name: DB_PASS
+          value: "pas4appuser"
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.23.0
+        command: ["/cloud_sql_proxy",
+                  "-instances=[CONNECTION_NAME]=tcp:3306"]
+        securityContext:
+          runAsUser: 2
+          allowPrivilegeEscalation: false

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: photoalbum-app
+  name: photoalbum-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: photoalbum-app
+  template:
+    metadata:
+      labels:
+        name: photoalbum-app
+    spec:
+      containers:
+      - name: photoalbum-app
+        image: gcr.io/[PROJECT_ID]/photoalbum-app@[DIGEST]
+        tty: true
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PROJECT_ID
+          value: "[PROJECT_ID]"
+        - name: DB_USER
+          value: "appuser"
+        - name: DB_PASS
+          value: "pas4appuser"
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.23.0
+        command: ["/cloud_sql_proxy",
+                  "-instances=[CONNECTION_NAME]=tcp:3306"]
+        securityContext:
+          runAsUser: 2
+          allowPrivilegeEscalation: false
